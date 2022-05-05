@@ -33,6 +33,10 @@ import pandas as pd
 
 
 class Scraper:
+    """This class is used to scrape tweets from twitter
+    Attributes:
+    -twitter URL
+    """
 
     def __init__(self,url: str = 'https://twitter.com/login'):
         self.driver_path = "C:/Users/sagal/OneDrive/Documents/AiCore/miniconda3/condabin/chromedriver.exe"
@@ -45,9 +49,10 @@ class Scraper:
         time.sleep(2)
 
     def login_username (self,username_xpath: str ='//input[@name="text"]' ):
+        """This function is used to bypass the login for twitter using person username"""
         username= self.driver.find_element(By.XPATH , username_xpath)
-        username.send_keys('sagal_98')
-        username.send_keys(Keys.RETURN)
+        twitter_username =getpass()
+        username.send_keys(twitter_username)
         time.sleep(2)
     
     def login_password (self,password_xpath: str ='//input[@name="password"]'):
