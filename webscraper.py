@@ -33,6 +33,7 @@ import pandas as pd
 
 
 class Scraper:
+
     """This class is used to scrape tweets from twitter
     Attributes:
     -Twitter URL
@@ -50,7 +51,12 @@ class Scraper:
 
     def login_username (self,username_xpath: str ='//input[@name="text"]' ):
 
-        """This function is used to enter username handle"""
+        """This function is used to enter username handle
+        Parameters
+        ------------
+        username_xpath:
+            this contains the xpath for the username 
+        """
 
         username= self.driver.find_element(By.XPATH , username_xpath)
         twitter_username =getpass()
@@ -59,16 +65,39 @@ class Scraper:
         time.sleep(2)
     
     def login_password (self,password_xpath: str ='//input[@name="password"]'):
-        """This function is used to """
+
+        """This function is used to retrieve the password
+
+        Parameters
+        ------------
+        password_xpath:
+            this contains the xpath for the password 
+        """
         password= self.driver.find_element(By.XPATH , password_xpath)
         my_password = getpass()
         password.send_keys(my_password)
         time.sleep(2)
         
     def login (self,click_passowrd: str ='//*[@id="layers"]/div/div/div/div/div/div/div[2]/div[2]/div/div/div[2]/div[2]/div[2]/div/div[1]'):
+
+        """ This function is used login to the account 
+        Parameters
+        ------------
+        click_password:
+            this contains the xpath for the login button
+        
+        """
         login_to_twitter = self.driver.find_element(By.XPATH,click_passowrd ).click()
 
     def accept_cookies(self,xpath: str ='//*[@id="layers"]/div/div[2]/div/div/div/div[2]/div[1]'):
+
+        """This function is to accept the cookies on the page
+        Parameters
+        ------------
+        xpath:
+            this contains the xpath for the accept cookies button
+        """
+
         try:    
             WebDriverWait(self.driver, 10).until(EC.presence_of_element_located((By.XPATH, xpath)))
             self.driver.find_element(By.XPATH , xpath).click()
@@ -76,7 +105,16 @@ class Scraper:
             print('No Cookies Found')
         time.sleep(2)
     
+
     def search(self,search_xpath: str = '//input[@aria-label="Search query"]'):
+
+        """This function is to allow the user to request a twitter search from user and load latest tweets
+        Parameters
+        ------------
+        search_xpath:
+            this contains the xpath for the search button 
+        """
+
         user_search = self.driver.find_element(By.XPATH, search_xpath)
         request = input('What would you like to search?')
         user_search.send_keys(request)
@@ -84,10 +122,10 @@ class Scraper:
         self.driver.find_element(By.LINK_TEXT, 'Latest').click()
         time.sleep(3)
 
-    # dict_data = {'UUID': [],'twitter_username':[] , 'twitter_handle': [] ,'twitter_postdate': [],'twitter_comment':[],'twitter_reply_cnt':[],'twitter_like_cnt':[],'twitter_retweet_cnt':[]}
-
-#    def find_container(self, xpath: str ="//div[@aria-label='Timeline: Search timeline']//article"):
     def find_container(self,xpath: str = '//*[@id="react-root"]/div/div/div[2]/main/div/div/div/div/div/div[2]/div/section/div/div'):
+
+        """This function finds the container with all the tweets and appends to a dictionary"""
+
         time.sleep(1)
         container = self.driver.find_element(By.XPATH,xpath)
         twitter_list = container.find_elements(By.XPATH, './div')
@@ -140,6 +178,7 @@ class Scraper:
                 else:
                     last_postion =curr_position
                     break
+       
                     
                   
 
