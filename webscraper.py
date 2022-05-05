@@ -35,7 +35,7 @@ import pandas as pd
 class Scraper:
     """This class is used to scrape tweets from twitter
     Attributes:
-    -twitter URL
+    -Twitter URL
     """
 
     def __init__(self,url: str = 'https://twitter.com/login'):
@@ -49,13 +49,17 @@ class Scraper:
         time.sleep(2)
 
     def login_username (self,username_xpath: str ='//input[@name="text"]' ):
-        """This function is used to bypass the login for twitter using person username"""
+
+        """This function is used to enter username handle"""
+
         username= self.driver.find_element(By.XPATH , username_xpath)
         twitter_username =getpass()
         username.send_keys(twitter_username)
+        username.send_keys(Keys.RETURN)
         time.sleep(2)
     
     def login_password (self,password_xpath: str ='//input[@name="password"]'):
+        """This function is used to """
         password= self.driver.find_element(By.XPATH , password_xpath)
         my_password = getpass()
         password.send_keys(my_password)
