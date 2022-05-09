@@ -160,7 +160,7 @@ class Scraper:
 
                     dict_data['twitter_retweet_cnt'].append(tweet.find_element_by_xpath('//div[@data-testid ="retweet"]').text)
                     dict_data['UUID'].append(uuid.uuid4()) 
-                    print(dict_data['twitter_username'])
+                    print(pd.DataFrame(dict_data['twitter_username']))
                 except StaleElementReferenceException or NoSuchElementException:
                     sleep(4)  
 
