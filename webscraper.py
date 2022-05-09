@@ -139,7 +139,7 @@ class Scraper:
         while True:
             container = self.driver.find_element(By.XPATH,xpath)
             twitter_list = container.find_elements(By.XPATH, './div')
-            print(dict_data)
+            
 
             for tweet in twitter_list:
                 try:
@@ -160,9 +160,10 @@ class Scraper:
 
                     dict_data['twitter_retweet_cnt'].append(tweet.find_element_by_xpath('//div[@data-testid ="retweet"]').text)
                     dict_data['UUID'].append(uuid.uuid4()) 
+                    print(dict_data['twitter_username'])
                 except StaleElementReferenceException or NoSuchElementException:
                     sleep(4)  
-          
+
             Scroll_attempt = 0
             while True:
                 self.driver.execute_script('window.scrollTo(0, document.body.scrollHeight);')
