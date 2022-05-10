@@ -5,6 +5,7 @@
 # from time import sleep
 # #from webbrowser import Chrome 
 # from selenium.webdriver.chrome.options import Options
+from h11 import Data
 from selenium.webdriver.common.keys import Keys 
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
@@ -30,7 +31,7 @@ from selenium.webdriver.chrome.service import Service
 from selenium.common.exceptions import StaleElementReferenceException
 import uuid
 import pandas as pd
-
+import datetime
 
 class Scraper:
 
@@ -121,6 +122,7 @@ class Scraper:
         user_search.send_keys(Keys.RETURN)
         self.driver.find_element(By.LINK_TEXT, 'Latest').click()
         time.sleep(3)
+        #time_search = input('what date would you like to search until (format(yyyy/mm/dd)) ')
 
     def find_container(self,xpath: str = '//*[@id="react-root"]/div/div/div[2]/main/div/div/div/div/div/div[2]/div/section/div/div'):
 
@@ -131,10 +133,9 @@ class Scraper:
         twitter_list = container.find_elements(By.XPATH, './div')
         last_postion = self.driver.execute_script("return window.pageYOffset;")
         scrolling = True
-        dict_data = {'UUID': [],'twitter_username':[] , 'twitter_handle': [] ,'twitter_postdate': [],'twitter_comment':[],'twitter_reply_cnt':[],'twitter_like_cnt':[],'twitter_retweet_cnt':[]}
+        #self.dict_data = {'UUID': [],'twitter_username':[] , 'twitter_handle': [] ,'twitter_postdate': [],'twitter_comment':[],'twitter_reply_cnt':[],'twitter_like_cnt':[],'twitter_retweet_cnt':[]}
+        self.dict_data = {'twitter_username':[] , 'twitter_handle': [] ,'twitter_postdate': [],'twitter_comment':[],'twitter_reply_cnt':[],'twitter_like_cnt':[],'twitter_retweet_cnt':[]}
 
-        last_postion = self.driver.execute_script("return window.pageYOffset;")
-        scrolling = True
         
         while True:
             container = self.driver.find_element(By.XPATH,xpath)
@@ -143,28 +144,28 @@ class Scraper:
 
             for tweet in twitter_list:
                 try:
-                    dict_data['twitter_username'].append(tweet.find_element_by_xpath('.//span').text)
-                    dict_data['twitter_handle'].append(tweet.find_element_by_xpath('.//span[contains(text(),"@")]').text)
+                    self.dict_data['twitter_username'].append(tweet.find_element_by_xpath('.//span').text)
+                    self.dict_data['twitter_handle'].append(tweet.find_element_by_xpath('.//span[contains(text(),"@")]').text)
                     try:
-                        dict_data['twitter_postdate'].append(tweet.find_element_by_xpath('.//time').get_attribute('datetime'))
+                        self.dict_data['twitter_postdate'].append(tweet.find_element_by_xpath('.//time').get_attribute('datetime'))
+                        #time_of_tweet = tweet.find_element_by_xpath('.//time').get_attribute('datetime')
                     except NoSuchElementException:
-                        dict_data['twitter_postdate'].append('advert')
-                    # dict_data['twitter_comment'].append(tweet.find_element_by_xpath('.//div[2]/div[2]/div[1]').text)
-                #responding =container.find_element_by_xpath('.//div[2]/div[2]/div[2]').text
-                #text=comment + responding
-                    #dict_data['twitter_comment'].append(tweet.find_element_by_xpath('//div[@lang ="en"]').text)
-                    dict_data['twitter_comment'].append(tweet.find_element_by_xpath('//div[@class ="css-1dbjc4n"]').text)
-                    dict_data['twitter_reply_cnt'].append(tweet.find_element_by_xpath('//div[@data-testid ="reply"]').text)
+                        self.dict_data['twitter_postdate'].append('advert')
+                    self.dict_data['twitter_comment'].append(tweet.find_element_by_xpath('//div[@lang ="en"]').text)
+                    #self.dict_data['twitter_comment'].append(tweet.find_element_by_xpath('//*[@id="react-root"]/div/div/div[2]/main/div/div/div/div/div/div[2]/div/section/div/div/div[2]/div/div/article/div/div/div/div[3]/div[1]').text)
+                    self.dict_data['twitter_reply_cnt'].append(tweet.find_element_by_xpath('//div[@data-testid ="reply"]').text)
 
-                    dict_data['twitter_like_cnt'].append(tweet.find_element_by_xpath('//div[@data-testid ="like"]').text)
+                    self.dict_data['twitter_like_cnt'].append(tweet.find_element_by_xpath('//div[@data-testid ="like"]').text)
 
-                    dict_data['twitter_retweet_cnt'].append(tweet.find_element_by_xpath('//div[@data-testid ="retweet"]').text)
-                    dict_data['UUID'].append(uuid.uuid4()) 
-                    print(pd.DataFrame(dict_data['twitter_username']))
+                    self.dict_data['twitter_retweet_cnt'].append(tweet.find_element_by_xpath('//div[@data-testid ="retweet"]').text)
+                    #self.dict_data['UUID'].append(str(uuid.uuid4())) 
+
+        
                 except StaleElementReferenceException or NoSuchElementException:
                     sleep(4)  
 
             Scroll_attempt = 0
+        
             while True:
                 self.driver.execute_script('window.scrollTo(0, document.body.scrollHeight);')
                 sleep(1)
@@ -180,12 +181,11 @@ class Scraper:
                     last_postion =curr_position
                     break
        
-                    
-                  
 
-
-
-
+    def dataframe(self):
+        twitter_data = pd.DataFrame(self.dict_data)
+        return twitter_data
+    
 
 
         
