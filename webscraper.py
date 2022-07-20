@@ -151,13 +151,19 @@ class Scraper:
                         #time_of_tweet = tweet.find_element_by_xpath('.//time').get_attribute('datetime')
                     except NoSuchElementException:
                         self.dict_data['twitter_postdate'].append('advert')
-                    self.dict_data['twitter_comment'].append(tweet.find_element_by_xpath('//div[@lang ="en"]').text)
-                    #self.dict_data['twitter_comment'].append(tweet.find_element_by_xpath('//*[@id="react-root"]/div/div/div[2]/main/div/div/div/div/div/div[2]/div/section/div/div/div[2]/div/div/article/div/div/div/div[3]/div[1]').text)
+                    #self.dict_data['twitter_comment'].append(tweet.find_element_by_xpath('//div[@lang ="en"]').text)
+                    #self.dict_data['twitter_comment'].append(tweet.find_element_by_xpath('/html/body/div[1]/div/div/div[2]/main/div/div/div/div[1]/div/div[2]/div/section/div/div/div[4]/div/div/article/div/div/div/div[3]/div[2]/div').text)
+# /html/body/div[1]/div/div/div[2]/main/div/div/div/div[1]/div/div[2]/div/section/div/div/div[6]/div/div/article/div/div/div/div[3]/div[1]/div
+# /html/body/div[1]/div/div/div[2]/main/div/div/div/div[1]/div/div[2]/div/section/div/div/div[8]/div/div/article/div/div/div/div[3]/div[2]/div/span[3]
+
+#                     /html/body/div[1]/div/div/div[2]/main/div/div/div/div[1]/div/div[2]/div/section/div/div/div[8]/div/div/article/div/div
+                    self.dict_data['twitter_comment'].append(tweet.find_element_by_xpath('//[@id="react-root"]').text)
                     self.dict_data['twitter_reply_cnt'].append(tweet.find_element_by_xpath('//div[@data-testid ="reply"]').text)
+
 
                     self.dict_data['twitter_like_cnt'].append(tweet.find_element_by_xpath('//div[@data-testid ="like"]').text)
 
-                    self.dict_data['twitter_retweet_cnt'].append(tweet.find_element_by_xpath('//div[@data-testid ="retweet"]').text)
+                    self.dict_data['twitter_retweet_cnt'].append(tweet.find_element_by_xpath('//*[@id="productList"]/div[2]/div[2]/div/div[2]/div/div/div').text)
                     #self.dict_data['UUID'].append(str(uuid.uuid4())) 
 
         
@@ -168,7 +174,7 @@ class Scraper:
         
             while True:
                 self.driver.execute_script('window.scrollTo(0, document.body.scrollHeight);')
-                sleep(1)
+                sleep(4)
                 curr_position = self.driver.execute_script("return window.pageYOffset;")
                 if last_postion == curr_position:
                     Scroll_attempt += 1
