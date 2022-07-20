@@ -204,6 +204,5 @@ if __name__ == '__main__':
     bot.accept_cookies()
     bot.search()
     bot.find_container()
-    #bot.tweets()
-    #bot.get_tweet_data()
+
 
